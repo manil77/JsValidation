@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="scripts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
   </head>
   <body>
     <form method="post" action="#" id="form1">
@@ -19,9 +19,9 @@
       />
       <br />
       <br />
-      <button type="submit" value="">Submit</button>
+      <button type="submit" value="" id="SubmitBtn1">Submit</button>
     </form>
-    <form method="post" action="#" id="form2">
+    <!-- <form method="post" action="#" id="form2">
       <label for="PhoneNumber">Phone number</label>
       <input
         type="number"
@@ -33,7 +33,41 @@
       />
       <br />
       <br />
-      <button type="submit" value="">Submit</button>
+      <button type="submit" value="">Submit</button> -->
     </form>
   </body>
+  <script src="scripts.js"></script>
+  <script>
+   let formElem1 = document.querySelector('#form1');
+
+   formElem1.addEventListener('submit',(event)=>{
+    // Create AbortController
+    var stopController = new AbortController();
+    var signal = stopController.signal;
+    event.preventDefault();
+    console.log("from inner page");
+    const apiURL = "https://httpbin.org/post";
+    const formData = {
+      username : 'John Doe',
+      email: 'john@example.com',
+      password: 'securepassword123',
+    };
+    fetch(apiURL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      signal: signal,
+      body:JSON.stringify(formData),
+    })
+    .then(response =>{
+      if (!response.ok) {throw new Error('Network response was not ok');}
+    return response.json();
+    })
+    .then(newUserData => console.log('New user data: ',newUserData))
+    .catch(error =>{ console.log(error)})
+    stopController.abort();
+   });
+
+
+  </script>
 </html>
+
