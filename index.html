@@ -7,7 +7,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
   </head>
   <body>
-    <form method="post" action="#" id="form1">
+    <form method="post" action="https://httpbin.org/post" id="form1">
       <label for="Name">Name</label>
       <input
         type="text"
@@ -40,32 +40,36 @@
   <script>
    let formElem1 = document.querySelector('#form1');
 
-   formElem1.addEventListener('submit',(event)=>{
-    // Create AbortController
-    var stopController = new AbortController();
-    var signal = stopController.signal;
-    event.preventDefault();
-    console.log("from inner page");
-    const apiURL = "https://httpbin.org/post";
-    const formData = {
-      username : 'John Doe',
-      email: 'john@example.com',
-      password: 'securepassword123',
-    };
-    fetch(apiURL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      signal: signal,
-      body:JSON.stringify(formData),
-    })
-    .then(response =>{
-      if (!response.ok) {throw new Error('Network response was not ok');}
-    return response.json();
-    })
-    .then(newUserData => console.log('New user data: ',newUserData))
-    .catch(error =>{ console.log(error)})
-    stopController.abort();
-   });
+  //  formElem1.addEventListener('submit',(event)=>{
+  //   debugger;
+  //   //window.callFromWindow();
+  //   // Create AbortController
+  //   //var stopController = new AbortController();
+  //   //var signal = stopController.signal;
+  //   event.preventDefault();
+  //   console.log("from inner page");
+  //   const apiURL = "https://httpbin.org/post";
+  //   const formData = {
+  //     username : 'John Doe',
+  //     email: 'john@example.com',
+  //     password: 'securepassword123',
+  //   };
+
+
+  //   fetch(apiURL,{
+  //     method:'POST',
+  //     headers:{'Content-Type':'application/json'},
+  //     //signal: signal,
+  //     body:JSON.stringify(formData),
+  //   })
+  //   .then(response =>{
+  //     if (!response.ok) {throw new Error('Network response was not ok');}
+  //   return response.json();
+  //   })
+  //   .then(newUserData => console.log('New user data: ',newUserData))
+  //   .catch(error =>{ console.log(error)})
+  //   //stopController.abort();
+  //  });
 
 
   </script>
