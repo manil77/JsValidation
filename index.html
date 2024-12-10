@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
   </head>
   <body>
     <form method="post" action="https://httpbin.org/post" id="form1">
@@ -16,6 +15,7 @@
         data-length-min="2"
         data-length-max="10"
         data-label="First Name"
+        required
       />
       <br />
       <br />
@@ -36,40 +36,47 @@
       <button type="submit" value="">Submit</button> -->
     </form>
   </body>
-  <script src="scripts.js"></script>
+  <!-- <script src="scripts.js"></script> -->
+   <script src="validator.js"></script>
   <script>
    let formElem1 = document.querySelector('#form1');
 
-  //  formElem1.addEventListener('submit',(event)=>{
-  //   debugger;
-  //   //window.callFromWindow();
-  //   // Create AbortController
-  //   //var stopController = new AbortController();
-  //   //var signal = stopController.signal;
-  //   event.preventDefault();
-  //   console.log("from inner page");
-  //   const apiURL = "https://httpbin.org/post";
-  //   const formData = {
-  //     username : 'John Doe',
-  //     email: 'john@example.com',
-  //     password: 'securepassword123',
-  //   };
+   formElem1.addEventListener('submit',(event)=>{
+    
+    event.preventDefault();
+    const validatorResponse = checkValidations(formElem1);
 
+    if(validatorResponse.responseStatus == true){
+      const apiURL = "https://httpbin.org/post";
+      const formData = {
+        username : 'John Doe',
+        email: 'john@example.com',
+        password: 'securepassword123',
+      };
 
-  //   fetch(apiURL,{
-  //     method:'POST',
-  //     headers:{'Content-Type':'application/json'},
-  //     //signal: signal,
-  //     body:JSON.stringify(formData),
-  //   })
-  //   .then(response =>{
-  //     if (!response.ok) {throw new Error('Network response was not ok');}
-  //   return response.json();
-  //   })
-  //   .then(newUserData => console.log('New user data: ',newUserData))
-  //   .catch(error =>{ console.log(error)})
-  //   //stopController.abort();
-  //  });
+      fetch(apiURL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        //signal: signal,
+        body:JSON.stringify(formData),
+      })
+      .then(response =>{
+        if (!response.ok) {throw new Error('Network response was not ok');}
+      return response.json();
+      })
+      .then(newUserData => console.log('New user data: ',newUserData))
+      .catch(error =>{ console.log(error)})
+    }
+    else{
+      //swal notification or something
+      console.log(validatorResponse);
+    }
+    //window.callFromWindow();
+    // Create AbortController
+    //var stopController = new AbortController();
+    //var signal = stopController.signal;
+    //stopController.abort();
+   });
 
 
   </script>

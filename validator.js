@@ -1,69 +1,27 @@
-//This script sends the request after validating the form through form's attribute(method & action)
-
-document.addEventListener("DOMContentLoaded", function () {
-    const formElements = document.querySelectorAll("form");
-
-    formElements.forEach((form) =>
-        form.addEventListener("submit", function (event) {
-            debugger;
-            event.preventDefault();
-            const submittedForm = event.target.closest("form"); //This will isolate the submitted form if theere are multiple forms in an html page
-            const controller = new AbortController();
-            if (submittedForm) {
-                let allValidationResponse = checkValidations(submittedForm); // Validation function
-                if (!allValidationResponse.responseStatus) {
-                    controller.abort();
-                }
-            }
-            //URL calls
-            const url = form.action;
-            const formData = ""; //take form data;
-
-            fetch(url, {
-                method: "POST", //take from form method
-                headers: { "Content-Type": "application/json" },
-                //signal: signal,
-                body: JSON.stringify(formData),
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                })
-                .then((newUserData) =>
-                    console.log("New user data: ", newUserData)
-                )
-                .catch((error) => {
-                    console.log(error);
-                });
-        })
-    );
-});
+//This script just validates the form
 
 function checkValidations(form) {
-    debugger;
-    let isValid = true;
+    let isFormValid = true;
     const textElements = form.querySelectorAll('input[type="text"][required]');
     //Check if there are textElements before using loop
     textElements.forEach((element) => {
         let validationResponse = checkValidationForText(element);
         if (!validationResponse.responseStatus) {
-            isValid = false;
+            isFormValid = false;
             console.log("Reason: ", validationResponse.responseMessage);
         }
     });
 
-    const numberElements = form.querySelectorAll('input[type="number"]');
+    const numberElements = form.querySelectorAll('input[type="number"][required]');
     numberElements.forEach((element) => {
         let validationResponse = checkValidationForNumber(element);
         if (!validationResponse.responseStatus) {
-            isValid = false;
+            isFormValid = false;
             console.log("Reason: ", validationResponse.responseMessage);
         }
     });
 
-    if (isValid) {
+    if (isFormValid) {
         return {
             responseStatus: true,
             responseMessage: `Validation for form is successful`,
